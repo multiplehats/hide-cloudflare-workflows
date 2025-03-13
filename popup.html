@@ -1,0 +1,24 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Cloudflare Workflow Hider</title>
+  <link rel="stylesheet" href="styles.css">
+</head>
+<body class="popup">
+  <h1>Hidden Cloudflare Workflows</h1>
+
+  <div id="hidden-list-container">
+    <p class="empty-message" id="empty-message">No workflows are currently hidden.</p>
+    <ul id="hidden-list"></ul>
+  </div>
+
+  <div class="button-container">
+    <button id="clear-all">Clear All Hidden Workflows</button>
+    <button id="force-add">Force Add Hide Buttons</button>
+  </div>
+
+  <p id="status-message" class="status-message" style="display: none;"></p>
+
+  <script src="popup.js"></script>
+</body>
+</html>
