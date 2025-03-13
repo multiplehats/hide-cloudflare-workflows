@@ -1,5 +1,7 @@
 # Cloudflare Workflow Hider
 
+![Cloudflare Workflow Hider in action](example.png)
+
 A simple Chrome extension that allows you to hide Cloudflare workflows in their dashboard.
 
 ## Why?
@@ -46,7 +48,3 @@ If you don't see the "Hide" buttons:
 - It does not actually delete or modify any workflows on Cloudflare's servers
 - Hidden workflows are stored in your browser's local storage
 - This is for personal use only and not intended for distribution
-
-## Icon Credits
-
-The icons used in this extension are placeholders. For a production extension, you should replace them with proper icons.
