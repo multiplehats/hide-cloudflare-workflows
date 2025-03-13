@@ -14,6 +14,7 @@ Cloudflare currently doesn't support deleting workflows, which can lead to a clu
 - Persistent storage of hidden workflows
 - Popup interface to see all hidden workflows
 - Option to clear all hidden workflows at once
+- Works with the latest Cloudflare dashboard UI
 
 ## Installation
 
@@ -27,7 +28,7 @@ Since this is not distributed through the Chrome Web Store, you'll need to insta
 
 ## Usage
 
-1. Navigate to your Cloudflare Workers Workflows dashboard
+1. Navigate to your Cloudflare Workers Workflows dashboard (`https://dash.cloudflare.com/*/workers/workflows`)
 2. Each workflow row will now have a "Hide" button
 3. Click "Hide" to hide a workflow (it will disappear from the table)
 4. Click the extension icon in your browser toolbar to see a list of hidden workflows
@@ -37,10 +38,30 @@ Since this is not distributed through the Chrome Web Store, you'll need to insta
 
 If you don't see the "Hide" buttons:
 
-1. Click the extension icon in your browser toolbar
-2. Click the "Force Add Hide Buttons" button
-3. Refresh the page if the buttons still don't appear
-4. Make sure you're on the Cloudflare Workers Workflows dashboard page
+1. Make sure you're on the Cloudflare Workers Workflows dashboard page (URL should contain `/workers/workflows`)
+2. Click the extension icon in your browser toolbar
+3. Click the "Force Add Hide Buttons" button
+4. Refresh the page if the buttons still don't appear
+5. Check the browser console for any error messages (press F12 to open developer tools)
+6. Try disabling and re-enabling the extension
+7. If the Cloudflare dashboard UI has changed, the extension may need to be updated
+
+### Common Issues
+
+- **Buttons don't appear**: The Cloudflare dashboard UI may have changed. Try clicking "Force Add Hide Buttons" in the extension popup.
+- **Extension doesn't work**: Make sure you're on the correct page. The extension only works on the Cloudflare Workers Workflows dashboard.
+- **Buttons disappear after page navigation**: This is normal. The extension will add the buttons again when you return to the Workflows page.
+- **Hidden workflows reappear**: Make sure you're using the same browser profile where you hid the workflows.
+
+### Advanced Troubleshooting
+
+If you're still having issues:
+
+1. Open Chrome DevTools (F12 or right-click > Inspect)
+2. Go to the Console tab
+3. Look for any error messages related to the extension
+4. If you see errors about "content script not loaded" or similar, try reloading the extension
+5. Check if there are any Content Security Policy (CSP) errors that might be blocking the extension
 
 ## Notes
 
@@ -48,3 +69,10 @@ If you don't see the "Hide" buttons:
 - It does not actually delete or modify any workflows on Cloudflare's servers
 - Hidden workflows are stored in your browser's local storage
 - This is for personal use only and not intended for distribution
+
+## Updates
+
+- **v1.3** (2023-03-15): Fixed issue where hidden workflows were not being removed from the table
+- **v1.2** (2023-03-14): Improved button placement and added more robust error handling
+- **v1.1** (2023-03-13): Updated to work with the latest Cloudflare dashboard UI
+- **v1.0** (2023-03-10): Initial release

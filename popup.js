@@ -1,3 +1,8 @@
+// Check if a URL is a Cloudflare Workflows page
+function isWorkflowsPage(url) {
+  return url.includes('cloudflare.com') && url.includes('workers/workflows');
+}
+
 // When the popup is loaded
 document.addEventListener('DOMContentLoaded', function() {
   // Get references to DOM elements
@@ -5,23 +10,38 @@ document.addEventListener('DOMContentLoaded', function() {
   const emptyMessage = document.getElementById('empty-message');
   const clearAllBtn = document.getElementById('clear-all');
   const forceAddBtn = document.getElementById('force-add');
+  const statusEl = document.getElementById('status-message');
 
   // Get the active tab
   chrome.tabs.query({active: true, currentWindow: true}, function(tabs) {
     const activeTab = tabs[0];
 
-    // Only proceed if we're on a cloudflare.com domain
-    if (activeTab.url.includes('cloudflare.com')) {
+    // Only proceed if we're on a cloudflare workflows page
+    if (isWorkflowsPage(activeTab.url)) {
       // Get the list of hidden workflows from the content script
       chrome.tabs.sendMessage(activeTab.id, {action: 'getHiddenWorkflows'}, function(response) {
         if (response && response.hiddenWorkflows) {
           updateHiddenList(response.hiddenWorkflows);
         }
       });
+
+      // Enable the buttons
+      clearAllBtn.disabled = false;
+      forceAddBtn.disabled = false;
     } else {
-      // Not on Cloudflare
+      // Not on Cloudflare Workflows page
       hiddenList.innerHTML = '';
-      emptyMessage.textContent = 'This extension only works on Cloudflare dashboard pages.';
+      emptyMessage.textContent = 'This extension only works on the Cloudflare Workflows dashboard page.';
+      emptyMessage.style.display = 'block';
+
+      // Disable the buttons
+      clearAllBtn.disabled = true;
+      forceAddBtn.disabled = true;
+
+      // Show a helpful message
+      statusEl.textContent = 'Please navigate to the Cloudflare Workflows page to use this extension.';
+      statusEl.style.display = 'block';
+      statusEl.style.color = '#f44336'; // Red color for warning
     }
   });
 
@@ -30,10 +50,19 @@ document.addEventListener('DOMContentLoaded', function() {
     chrome.tabs.query({active: true, currentWindow: true}, function(tabs) {
       const activeTab = tabs[0];
 
-      if (activeTab.url.includes('cloudflare.com')) {
+      if (isWorkflowsPage(activeTab.url)) {
         chrome.tabs.sendMessage(activeTab.id, {action: 'clearAllHidden'}, function(response) {
           if (response && response.success) {
             updateHiddenList([]);
+
+            // Show success message
+            statusEl.textContent = 'All workflows are now visible!';
+            statusEl.style.display = 'block';
+            statusEl.style.color = '#4CAF50'; // Green color for success
+
+            setTimeout(() => {
+              statusEl.style.display = 'none';
+            }, 3000);
           }
         });
       }
@@ -45,12 +74,12 @@ document.addEventListener('DOMContentLoaded', function() {
     chrome.tabs.query({active: true, currentWindow: true}, function(tabs) {
       const activeTab = tabs[0];
 
-      if (activeTab.url.includes('cloudflare.com')) {
+      if (isWorkflowsPage(activeTab.url)) {
         chrome.tabs.sendMessage(activeTab.id, {action: 'forceAddButtons'}, function(response) {
           if (response && response.success) {
-            const statusEl = document.getElementById('status-message');
             statusEl.textContent = 'Hide buttons added!';
             statusEl.style.display = 'block';
+            statusEl.style.color = '#4CAF50'; // Green color for success
 
             setTimeout(() => {
               statusEl.style.display = 'none';
@@ -65,6 +94,7 @@ document.addEventListener('DOMContentLoaded', function() {
   function updateHiddenList(hiddenWorkflows) {
     if (hiddenWorkflows.length === 0) {
       hiddenList.innerHTML = '';
+      emptyMessage.textContent = 'No workflows are currently hidden.';
       emptyMessage.style.display = 'block';
     } else {
       emptyMessage.style.display = 'none';

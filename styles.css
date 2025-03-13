@@ -1,17 +1,45 @@
 .workflow-hide-btn {
-  background-color: #f0f0f0;
-  border: 1px solid #ccc;
+  background-color: transparent;
+  border: 1px solid #086fff;
   border-radius: 4px;
   padding: 4px 8px;
   font-size: 12px;
   cursor: pointer;
-  color: #333;
+  color: #086fff;
   margin-left: 10px;
-  transition: background-color 0.2s;
+  transition: background-color 0.2s, color 0.2s;
+  font-weight: 500;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  position: relative;
+  z-index: 1000; /* Ensure button is above other elements */
 }
 
 .workflow-hide-btn:hover {
-  background-color: #e0e0e0;
+  background-color: rgba(8, 111, 255, 0.1);
+}
+
+.workflow-hide-btn:active {
+  background-color: rgba(8, 111, 255, 0.2);
+}
+
+/* Add a more prominent style for the button */
+.workflow-hide-btn::before {
+  content: '';
+  position: absolute;
+  top: -2px;
+  left: -2px;
+  right: -2px;
+  bottom: -2px;
+  border-radius: 6px;
+  border: 1px solid transparent;
+  transition: border-color 0.2s;
+  pointer-events: none;
+}
+
+.workflow-hide-btn:hover::before {
+  border-color: rgba(8, 111, 255, 0.3);
 }
 
 /* Style for the popup */
@@ -66,3 +94,4 @@ body.popup {
   gap: 8px;
   margin-bottom: 10px;
 }
+
